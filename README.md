@@ -26,7 +26,12 @@ We use the canonical state
 
 $$ z = (\theta_1, \theta_2, p_1, p_2) $$
 $$ \dot{z} = J \nabla H(z) $$
-$$ J = \begin{bmatrix} 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ -1 & 0 & 0 & 0 \\ 0 & -1 & 0 & 0 \end{bmatrix} $$
+$$ J = \left[\begin{array}{cccc}
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+-1 & 0 & 0 & 0 \\
+0 & -1 & 0 & 0
+\end{array}\right] $$
 
 ---
 
