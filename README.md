@@ -8,8 +8,8 @@ A small research-style codebase for comparing a **Hamiltonian Neural Network (HN
 
 This project learns the dynamics of a conservative nonlinear system from data and compares two modeling approaches:
 
-1. **Baseline NN**: directly predicts the state derivatives \(\dot z\) from the current state.
-2. **HNN**: learns a scalar Hamiltonian \(H_\psi(z)\) and induces dynamics through Hamilton's equations.
+1. **Baseline NN**: directly predicts the state derivatives $\dot z$ from the current state.  
+2. **HNN**: learns a scalar Hamiltonian $H_{\phi}(z)$ and induces dynamics through Hamilton's equations.
 
 ### Comparison metrics
 
@@ -117,6 +117,6 @@ python scripts/evaluate_models.py
 
 - This repo uses **canonical coordinates** (angles + momenta), not angular velocities, because that is the mathematically correct setting for an HNN.
 - A ground-truth Hamiltonian is implemented explicitly so we can generate trustworthy training targets.
-- The HNN objective is to match the induced vector field \(J \nabla H_\psi(z)\) to the true derivatives.
+- The HNN objective is to match the induced vector field $J \nabla H_\psi(z)$ to the true derivatives.
 
 ---
