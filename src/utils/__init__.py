@@ -7,4 +7,5 @@ from .plotting import (
     plot_energy_drift,
     plot_phase_portrait,
     plot_dataset_examples,
+    plot_aggregate_metric_bars
 )

@@ -132,3 +132,83 @@ def plot_dataset_examples(
     fig.tight_layout()
     fig.savefig(save_path, dpi=200)
     plt.close(fig)
+
+
+def plot_aggregate_metric_bars(
+    metrics: dict[str, float],
+    save_path: str | Path,
+    title: str = "Aggregate model comparison",
+) -> None:
+    """
+    Plot a simple grouped bar chart for the two most important aggregate metrics:
+    trajectory MSE and maximum energy drift.
+
+    Expected keys in ``metrics``:
+        - mean_baseline_mse
+        - mean_hnn_mse
+        - mean_baseline_max_energy_drift
+        - mean_hnn_max_energy_drift
+    """
+    save_path = _prepare_path(save_path)
+
+    labels = ["Trajectory MSE", "Max energy drift"]
+    baseline_vals = [
+        float(metrics["mean_baseline_mse"]),
+        float(metrics["mean_baseline_max_energy_drift"]),
+    ]
+    hnn_vals = [
+        float(metrics["mean_hnn_mse"]),
+        float(metrics["mean_hnn_max_energy_drift"]),
+    ]
+
+    x = np.arange(len(labels))
+    width = 0.34
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    bars1 = ax.bar(x - width / 2, baseline_vals, width, label="baseline")
+    bars2 = ax.bar(x + width / 2, hnn_vals, width, label="hnn")
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.set_ylabel("metric value")
+    ax.set_title(title)
+    ax.legend()
+    ax.set_yscale("log")
+    ax.grid(axis="y", alpha=0.25)
+
+    def _annotate(bars, vals):
+        for bar, val in zip(bars, vals):
+            ax.annotate(
+                f"{val:.3g}",
+                xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
+                xytext=(0, 3),
+                textcoords="offset points",
+                ha="center",
+                va="bottom",
+                fontsize=9,
+            )
+
+    _annotate(bars1, baseline_vals)
+    _annotate(bars2, hnn_vals)
+
+    if hnn_vals[0] > 0 and hnn_vals[1] > 0:
+        mse_ratio = baseline_vals[0] / hnn_vals[0]
+        drift_ratio = baseline_vals[1] / hnn_vals[1]
+        ratio_text = (
+            f"MSE improvement: {mse_ratio:.1f}x\n"
+            f"Drift improvement: {drift_ratio:.1f}x"
+        )
+        ax.text(
+            0.98,
+            0.98,
+            ratio_text,
+            transform=ax.transAxes,
+            ha="right",
+            va="top",
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9),
+            fontsize=9,
+        )
+
+    fig.tight_layout()
+    fig.savefig(save_path, dpi=220)
+    plt.close(fig)
